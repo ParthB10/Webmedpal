@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Medpal Registration</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="freelancer.min.css" rel="stylesheet">
+    <link href="font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <script src="appointment.js"></script>
+    <script src="http://momentjs.com/downloads/moment-with-locales.js"></script>
+    <script src="http://momentjs.com/downloads/moment-timezone-with-data.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <style>
+    .red{
+        color:red;
+        }
+        .form-control{
+            background:#3e5871;
+            color:white;
+        }
+    .form-area
+    {
+        border-radius: 5px;
+        background: #2C3E50;
+         border-top: 3px solid #434a52;
+          border-bottom: 3px solid #434a52;
+    	padding: 10px 40px 60px;
+    	margin: 10px 0px 60px;
+    	border: 1px solid GREY;
+    	color:white;
+    	}
+        body {
+      background: #f7f6f3;
+      font-family: sans-serif;
+    }
+    .option{
+        background:white;
+        color:black;
+    }
+    .button[type="submit"] {
+      background:#b02932;
+      border: 0;
+      width: 100%;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 16px;
+      height: 40px;
+      border-radius: 3px;
+      color: white;
+      align:center;
+      cursor: pointer;
+      margin-top:10px;
+      transition: background 0.3s ease-in-out;
+    }
+    .button:hover {
+      background: #b02932;
+      font-family: 'Open Sans', Arial, sans-serif;
+          font-size: 17px;
+      font-weight:bold;
+    }
+    .calendar {
+          position: absolute;
+      width: 280px;
+      left: 50%;
+      top: 50%;
+      margin: -145px 0px 0px -140px;
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .ui-datepicker-header {
+      height: 50px;
+      line-height: 50px;
+      color: #b0aead;
+      background: #e9e5e3;
+      margin-bottom: 10px;
+    }
+    .ui-datepicker-prev,
+        .ui-datepicker-next {
+          width: 20px;
+      height: 20px;
+    text-indent: 9999px;
+    border: 2px solid #b0aead;
+     border-radius: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    margin-top: 12px;
+    }
+    .ui-datepicker-prev {
+        float: left;
+        margin-left: 12px;
+    }
+    .ui-datepicker-prev:after {
+        transform: rotate(45deg);
+        margin: -43px 0px 0px 8px;
+    }
+    .ui-datepicker-next {
+        float: right;
+        margin-right: 12px;
+    }
+    .ui-datepicker-next:after {
+    transform: rotate(-135deg);
+     margin: -43px 0px 0px 6px;
+    }
+    .ui-datepicker-prev:after,
+    .ui-datepicker-next:after {
+        content: '';
+         position: absolute;
+        display: block;
+        width: 4px;
+        height: 4px;
+        border-left: 2px solid #b0aead;
+        border-bottom: 2px solid #b0aead;
+    }
+    .ui-datepicker-prev:hover,
+    .ui-datepicker-next:hover,
+    .ui-datepicker-prev:hover:after,
+    .ui-datepicker-next:hover:after {
+        border-color: #5ed1cc;
+    }
+    .ui-datepicker-title {
+        text-align: center;
+    }
+    .ui-datepicker-calendar {
+        width: 100%;
+        text-align: center;
+    }
+    .ui-datepicker-calendar thead tr th span {
+        display: block;
+        width: 40px;
+        color: #00a8b2;
+        margin-bottom: 5px;
+        font-size:16px;
+    }
+    .ui-state-default {
+        display: block;
+        text-decoration: none;
+        line-height: 40px;
+        font-size: 16px;
+    }
+    .ui-state-default:hover {
+        background: rgba(0,0,0,0.02);
+    }
+    .ui-state-highlight {
+        color: #8dd391;
+    }
+    .ui-state-active {
+        color: #5ed1cc;
+    }
+    .ui-datepicker-unselectable .ui-state-default {
+        color: #eee;
+        border: 2px solid transparent;
+    }
+    input::placeholder{
+        color:white;
+    }
+    #form-area form input[type=text]{
+        color:white;
+    }
+
+
+
+            label.btn span {
+                font-size:16px;
+            }
+            label input[type="radio"] ~ i.fa.fa-circle-o{
+            color: #eee;    display: inline;
+            }
+            label input[type="radio"] ~ i.fa.fa-dot-circle-o{
+                display: none;
+            }
+            label input[type="radio"]:checked ~ i.fa.fa-circle-o{
+                display: none;
+            }
+            label input[type="radio"]:checked ~ i.fa.fa-dot-circle-o{
+                color: rgba(24, 188, 156, 0.9);    display: inline;
+            }
+            label:hover input[type="radio"] ~ i.fa {
+                color: #1bd3af;
+            }
+            label input[type="checkbox"] ~ i.fa.fa-square-o{
+                color: #eee;    display: inline;
+            }
+            label input[type="checkbox"] ~ i.fa.fa-check-square-o{
+                display: none;
+            }
+            label input[type="checkbox"]:checked ~ i.fa.fa-square-o{
+                display: none;
+            }
+            label input[type="checkbox"]:checked ~ i.fa.fa-check-square-o{
+                color: rgba(24, 188, 156, 0.9);    display: inline;
+            }
+            label:hover input[type="checkbox"] ~ i.fa {
+                color: rgba(24, 188, 156, 0.9);
+            }
+            div[data-toggle="buttons"] label.active{
+                color: rgba(24, 188, 156, 0.9);
+            }
+            div[data-toggle="buttons"] label {
+                display: inline-block;
+                padding: 6px 12px;
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 2em;
+                text-align: left;
+                white-space: nowrap;
+                vertical-align: top;
+                cursor: pointer;
+                background-color: none;
+                border: 0px solid #eee;
+                border-radius: 3px;
+                color: #eee;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+            }
+            div[data-toggle="buttons"] label:hover {
+                color: #1bd3af;
+            }
+            div[data-toggle="buttons"] label:active, div[data-toggle="buttons"] label.active {
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+        </style>
+</head>
+<body id="page-top" class="index" style="background:url(bg.png) repeat rgba(41,176,126,0.89);">
+<div id="skipnav">
+    <a href="#maincontent">Skip to main content</a>
+</div>
+<!--Heading Section-->
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <a class="navbar-brand" href="index.html">Medpal</a>
+        </div>
+    </div>
+</nav>
+<br>
+<section id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 style="color:white;">Registration</h2>
+                <hr class="divider">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-area">
+                <div role="form">
+                    <br style="clean:both">
+                    <div id="datepicker" class="calendar"></div>
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label>Registration For</label>
+                                
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="radio-inline" style="margin-left:30px">
+                                        <input type="radio" name='role' checked><span style="font-size:16px;">Patient</span>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name='role'><span style="font-size:16px;">Doctor</span>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name='role'><span style="font-size:16px;">Staff</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<input type="text" style="background:#3e5871;color:#eee;border-color:#3e5871" class="form-control" id="personappoinment" name="nameofperson" placeholder="Name Of Person Taking The Appoinment" required>-->
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="fname" name="FirstName" placeholder="First Name" required style="background:#3e5871;color:#eee;border-color:#3e5871">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="lname" name="LastName" placeholder="Last Name" required style="background:#3e5871;color:#eee;border-color:#3e5871">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="UserName" placeholder="User Name" required style="background:#3e5871;color:#eee;border-color:#3e5871">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="pass" name="Password" placeholder="Password" required style="background:#3e5871;color:#eee;border-color:#3e5871">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label>Gender</label>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="radio-inline" style="margin-left:30px">
+                                        <input type="radio" name='gender' checked><span style="font-size:16px;"> Male</span>
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name='gender'><span> Female</span>
+                                    </label>
+                                    <label>
+                                        <input type="number" class="form-control" id="age" name="Age" placeholder="Age" required style=" max-width:185px;margin-left:0px;background:#3e5871;color:#eee;border-color:#3e5871">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" placeholder="Address" required style="border:0px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="mobile" name="contact" style="background:#3e5871;color:#eee;border-color:#3e5871" placeholder="Contact Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" name="emailid" style="background:#3e5871;color:#eee;border-color:#3e5871" placeholder="Email ID" required>
+                    </div>
+
+               
+
+                    <!--<div class="btn-group" data-toggle="buttons">
+                        <label class="button btn btn-primary">
+                            <input type="checkbox">Email
+                        </label>
+                        <label class="button btn btn-primary">
+                            <input type="checkbox">Mobile
+                        </label>
+                    </div>-->
+
+                    <!--<button type="submit" style="background:rgba(24, 188, 156, 0.9),border: 0,width: 100%,font-family: 'Open Sans',font-size: 16px,height: 40px,border-radius: 3px,color: white,cursor: pointer,transition: background 0.3s ease-in-out;" id="submit" name="submit" class="btn btn-primary pull-right button">Submit</button>-->
+
+                    <input type="submit" align="center" class=button value="Submit">
+                </div>
+            </div>
+        </div>
+</section>
+<footer class="text-center">
+    <div class="footer-below">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    Copyright &copy; Medstream Technologies 2017
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
