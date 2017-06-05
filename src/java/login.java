@@ -11,10 +11,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -91,12 +94,20 @@ public class login extends HttpServlet {
                 response.sendRedirect("Services.html");
             }
             else{
-                out.println("Login Failed");
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Incorrect username or password please check!');");
+                out.println("location='index.html';");
+                out.println("</script>");
+// out.println("<script type=\"text/javascript\">");
+//   out.println("alert('User or password incorrect');");
+//   out.println("location='index.jsp';");
+//   out.println("</script>");                
+
             }
         }
         catch(ClassNotFoundException | SQLException e)
         {
-            e.printStackTrace();
+            e.printStackTrace(out);            
         }
         //processRequest(request, response);
     }
