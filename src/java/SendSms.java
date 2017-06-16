@@ -5,6 +5,11 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.ws.rs.core.Response;
 
 /*
@@ -58,12 +63,24 @@ import javax.ws.rs.core.Response;
 public class SendSms {
     public String sendSms(){
         try{
+            //gather data
+            String otp="";
+            String cno="";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection c = DriverManager.getConnection("jdbc:mysql://192.168.1.10:3306/test_medpal","root","Admin@123");//("jdbc:mysql://192.168.1.10:3306/test_medpal","root","Admin@123")
+            String getdata="SELECT otp, contactno FROM users WHERE otpverify = 'N' ORDER BY id DESC LIMIT 1";
+            Statement ps = c.createStatement();
+            ResultSet rs = ps.executeQuery(getdata);
+            while(rs.next()){
+                otp=rs.getString("otp");
+                cno=rs.getString("contactno");
+            }
             //Textlocal Data
             String user = "username="+ URLEncoder.encode("parthbheda.pb@gmail.com","UTF-8");
             String hash="&hash"+ URLEncoder.encode("0a2a1420b38bc4b75bdfeba4403f0656295a9b78", "UTF-8");
-            String message = "&message" + URLEncoder.encode("This is your one-time password . Thank you, From Medstream Technologies.","UTF-8");//"+otp+"
+            String message = "&message" + URLEncoder.encode("This is your one-time password "+otp+". Thank you, From Medstream Technologies.","UTF-8");
             String sender = "&sender=" + URLEncoder.encode("MDSTHD", "UTF-8");
-            String numbers = "&numbers=" + URLEncoder.encode("cno", "UTF-8");
+            String numbers = "&numbers=" + URLEncoder.encode(cno, "UTF-8");
             
             //Send Sms
             String data = "https://api.textlocal.in/send/?" + user + hash + numbers + message + sender;

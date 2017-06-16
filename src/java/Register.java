@@ -4,14 +4,20 @@
  * and open the template in the editor.
  */
 
+import java.io.BufferedReader;
 import java.sql.PreparedStatement;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.security.Key;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,63 +34,50 @@ import sun.misc.BASE64Encoder;
 public class Register extends HttpServlet {
 
     private static final long serialVersionUID=1L;
-//    private static Cipher cipher = null;
-// private static byte[] encrypt(String input)throws Exception {
-//            cipher.init(Cipher.ENCRYPT_MODE, key);
-//            byte[] inputBytes = input.getBytes();
-//            return cipher.doFinal(inputBytes);
-//        }
-//%>
-//<%!
-//        private static String decrypt(byte[] encryptionBytes)throws Exception {
-//            cipher.init(Cipher.DECRYPT_MODE, key);
-//            byte[] recoveredBytes =  cipher.doFinal(encryptionBytes);
-//            String recovered =  new String(recoveredBytes);
-//            return recovered;
-//          }
-//          %>
-//<%
-//String name=request.getParameter("name");
-//String password=request.getParameter("pass");
-//String address=request.getParameter("address");
-//String phone=request.getParameter("phone");
-//int ph=Integer.parseInt(phone);
-//StringBuffer buffer=new StringBuffer();
-// key = KeyGenerator.getInstance(algorithm).generateKey();
-//            cipher = Cipher.getInstance(algorithm);
-//            String input = password;
-//            System.out.println("Entered: " + input);
-//            byte[] encryptionBytes = encrypt(input);
-//            String passw=new String(encryptionBytes);
-//String connectionURL = "jdbc:mysql://localhost:3306/test";
-//Connection con=null;
-//try{
-//Class.forName("com.mysql.jdbc.Driver");
-//con = DriverManager.getConnection(connectionURL, "root", "root");
-//PreparedStatement ps = con.prepareStatement("INSERT INTO user(name,password,address,telno) VALUES(?,?,?,?)");
-//ps.setString(1,name);
-//ps.setString(2,passw);
-//ps.setString(3,address);
-//ps.setInt(4,ph);
-//int i = ps.executeUpdate();
-//ps.close();
-//
-//}
-//catch(Exception ex){
-//System.out.println(ex);
-//}
-//try{
-//Statement st=con.createStatement();
-//ResultSet rs=st.executeQuery("Select * from user where id='1'");
-//String str="";
-//if(rs.next()){
-//str=rs.getString("password");
-//}
-//out.println("Your password is: "+decrypt(str.getBytes()));
-//System.out.println("Your password is: "+decrypt(str.getBytes()));
-//}
-//catch(Exception e){}
-//%>
+
+    public String sendSms(){
+        try{
+            //gather data
+            String otp="";
+            String cno="";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection c = DriverManager.getConnection("jdbc:mysql://192.168.1.10:3306/test_medpal","root","Admin@123");//("jdbc:mysql://192.168.1.10:3306/test_medpal","root","Admin@123")
+            String getdata="SELECT otp, contactno FROM users WHERE otpverify = 'N' ORDER BY id DESC LIMIT 1";
+            Statement ps = c.createStatement();
+            ResultSet rs = ps.executeQuery(getdata);
+            while(rs.next()){
+                otp=rs.getString("otp");
+                cno=rs.getString("contactno");
+            }
+            //Textlocal Data
+            String user = "username="+ URLEncoder.encode("parthbheda.pb@gmail.com","UTF-8");
+            String hash="&hash="+ URLEncoder.encode("0a2a1420b38bc4b75bdfeba4403f0656295a9b78", "UTF-8");
+            String message = "&message=" + URLEncoder.encode("This is your one-time password "+otp+". Thank you, From Medstream Technologies.","UTF-8");
+            String sender = "&sender=" + URLEncoder.encode("MDSTHD", "UTF-8");
+            String numbers = "&numbers=" + URLEncoder.encode(cno, "UTF-8");
+            
+            //Send Sms
+            String data = "https://api.textlocal.in/send/?" + user + hash + numbers + message + sender;
+            URL url = new URL(data);
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            
+            //Get Response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            String sresult = "";
+            while ((line=reader.readLine()) != null){
+                //process line
+                sresult=sresult+line+" ";
+            }
+            reader.close();
+            return sresult;
+        }
+        catch(Exception ex){
+            System.out.println("Error Sending Message"+ex);
+            return "Error "+ex;
+        }
+    }
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -134,21 +127,7 @@ public class Register extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-//    private static String algorithm = "DESede" ;
-//    private static Key key = null;
-//    private static Cipher cipher = null;
-//    private static byte[] encrypt(String input)throws Exception{
-//        cipher.init(Cipher.ENCRYPT_MODE, key);
-//        byte[] inputBytes = input.getBytes();
-//        return cipher.doFinal(inputBytes);
-//    }
-//    
-//    private static String decrypt(byte[] encryptionBytes)throws Exception{
-//        cipher.init(Cipher.DECRYPT_MODE,key);
-//        byte[] recoveredBytes = cipher.doFinal(encryptionBytes);
-//        String recovered = new String(recoveredBytes);
-//        return recovered;
-//    }
+
     private static Key generatekKey() throws Exception{
         Key key = new SecretKeySpec(keyValue, algorithm);
         return key;
@@ -164,42 +143,7 @@ public class Register extends HttpServlet {
         String encryptedValue = new BASE64Encoder().encode(encVal);
         return encryptedValue;
     }
-//    import java.security.*;
-//import java.security.spec.InvalidKeySpecException;
-//import javax.crypto.*;
-//import sun.misc.*;
-//
-//public class AESencrp {
-//    
-//     private static final String ALGO = "AES";
-//    private static final byte[] keyValue = 
-//        new byte[] { 'T', 'h', 'e', 'B', 'e', 's', 't',
-//'S', 'e', 'c', 'r','e', 't', 'K', 'e', 'y' };
-//
-//public static String encrypt(String Data) throws Exception {
-//        Key key = generateKey();
-//        Cipher c = Cipher.getInstance(ALGO);
-//        c.init(Cipher.ENCRYPT_MODE, key);
-//        byte[] encVal = c.doFinal(Data.getBytes());
-//        String encryptedValue = new BASE64Encoder().encode(encVal);
-//        return encryptedValue;
-//    }
-//
-//    public static String decrypt(String encryptedData) throws Exception {
-//        Key key = generateKey();
-//        Cipher c = Cipher.getInstance(ALGO);
-//        c.init(Cipher.DECRYPT_MODE, key);
-//        byte[] decordedValue = new BASE64Decoder().decodeBuffer(encryptedData);
-//        byte[] decValue = c.doFinal(decordedValue);
-//        String decryptedValue = new String(decValue);
-//        return decryptedValue;
-//    }
-//    private static Key generateKey() throws Exception {
-//        Key key = new SecretKeySpec(keyValue, ALGO);
-//        return key;
-//}
-//
-//}
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -219,26 +163,8 @@ public class Register extends HttpServlet {
         String email = request.getParameter("emailid");
         String add = request.getParameter("add");
         StringBuffer buffer = new StringBuffer();
-        //key=KeyGenerator.getInstance(algorithm).generateKey();
-        //cipher=Cipher.getInstance(algorithm);
         String input = pass;
-        //System.out.println("");
-        //byte[] encryptionBytes = encrypt(input);
         String dpass = encrypt(input);
-        //StringBuffer buffer=new StringBuffer();
-// key = KeyGenerator.getInstance(algorithm).generateKey();
-//            cipher = Cipher.getInstance(algorithm);
-//            String input = password;
-//            System.out.println("Entered: " + input);
-//            byte[] encryptionBytes = encrypt(input);
-//            String passw=new String(encryptionBytes);
-        
-//    catch(Exception e)
-//    {
-//        System.out.println(e);
-//    }
-//        
-//try
         {
             PrintWriter out=response.getWriter();
             Class.forName("com.mysql.jdbc.Driver");
@@ -254,7 +180,7 @@ public class Register extends HttpServlet {
             }
             else
             {
-            PreparedStatement ps = connection.prepareStatement("insert into users (Salutation,FirstName,LastName,Gender,Age,Address,ContactNo,EmailId,Uid,pass,actiondate) Values (?,?,?,?,?,?,?,?,?,?,now())");
+            PreparedStatement ps = connection.prepareStatement("insert into users (Salutation,FirstName,LastName,Gender,Age,Address,ContactNo,EmailId,Uid,pass,actiondate,otp) select ?,?,?,?,?,?,?,?,?,?,now(),round (1000 + ( RAND( ) *8999 ) )");
             ps.setString(1, sal);
             ps.setString(2, fname);
             ps.setString(3, lname);
@@ -267,6 +193,7 @@ public class Register extends HttpServlet {
             ps.setString(10,dpass);
             int i = ps.executeUpdate();
             ps.close();
+            sendSms();
             out.println("<script type=\"text/javascript\">");
             out.println("alert('You have been successfully registered please verify your number!')");
             out.println("location='VerifyOtp.html';");
@@ -280,32 +207,6 @@ public class Register extends HttpServlet {
         }
         }
         
-        
-            //ps.setString(1,name);
-//ps.setString(2,passw);
-//ps.setString(3,address);
-//ps.setInt(4,ph);
-//int i = ps.executeUpdate();
-//ps.close();
-//
-//}
-//catch(Exception ex){
-//System.out.println(ex);
-//}
-//try{
-//Statement st=con.createStatement();
-//ResultSet rs=st.executeQuery("Select * from user where id='1'");
-//String str="";
-//if(rs.next()){
-//str=rs.getString("password");
-//}
-//out.println("Your password is: "+decrypt(str.getBytes()));
-//System.out.println("Your password is: "+decrypt(str.getBytes()));
-//}
-//catch(Exception e){}
-        //}
-    //}
-
     /**
      * Returns a short description of the servlet.
      *

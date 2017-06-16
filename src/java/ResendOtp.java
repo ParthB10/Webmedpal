@@ -4,36 +4,28 @@
  * and open the template in the editor.
  */
 
-import java.sql.*; //jdbc.Connection;
-import java.sql.PreparedStatement;//com.mysql.jdbc.PreparedStatement;
-import java.sql.ResultSet; //com.mysql.jdbc.ResultSet;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.security.Key;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.SecretKeySpec;
-import javax.faces.context.FacesContext;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.PageContext;
-import javax.swing.JOptionPane;
-import sun.misc.BASE64Encoder;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ParthBheda
  */
-public class login extends HttpServlet {
+public class ResendOtp extends HttpServlet {
 
-    private static final long serialVersionUID=1L;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,10 +43,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet ResendOtp</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ResendOtp at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -83,60 +75,56 @@ public class login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
-    private static Key generateKey() throws Exception {
-        Key key = new SecretKeySpec(keyValue, algorithm);
-        return key;
-    }
-     private static final String algorithm = "AES";
-    private static final byte[] keyValue= new byte[] {'A','l','p','h','a','n','u','m','e','r','i','c','p','a','s','s'};
-    
-    public static String encrypt(String input) throws Exception{
-        Key key = generateKey();
-        Cipher c = Cipher.getInstance(algorithm);
-        c.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encVal=c.doFinal(input.getBytes());
-        String encryptedValue = new BASE64Encoder().encode(encVal);
-        return encryptedValue;
-    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
         try{
-        PrintWriter out = response.getWriter();
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
-        String input=pass;
-        String dpass= Register.encrypt(input);
+            PrintWriter out = response.getWriter();
+            String otp ="";
+            String cno = "";
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10:3306/test_medpal","root","Admin@123");
-            PreparedStatement ps = connection.prepareStatement("select * from users where uid = ? and pass =? and otpverify = 'Y'");
-            ps.setString(1, user);
-            ps.setString(2, dpass);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                //out.println("Login successful");
-                //FacesContext fc = FacesContext.getCurrentInstance();
-                HttpSession session = request.getSession(true);
-                //HttpSession session =(HttpSession) fc.getExternalContext().getSession(true);
-                session.setAttribute("user", user);                
-                response.sendRedirect("PatService.jsp");
-}
-            else{
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Please check your credentials or check your otp verification!');");
-                out.println("location='index.html';");
-                out.println("</script>");
+            String getotp = "select otp,ContactNo from users where actiondate = current_date() and otpverify = 'N' order by id desc limit 1";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(getotp);
+            while(rs.next()){
+                otp=rs.getString("otp");
+                cno=rs.getString("ContactNo");
             }
+            //Textlocal sms data
+            String user = "username="+URLEncoder.encode("parthbheda.pb@gmail.com", "UTF-8");
+            String hash = "&hash="+ URLEncoder.encode("0a2a1420b38bc4b75bdfeba4403f0656295a9b78", "UTF-8");
+            String message = "&message=" + URLEncoder.encode("This is your one-time password "+otp+". Thank you, From Medstream Technologies.","UTF-8");
+            String sender = "&sender=" + URLEncoder.encode("MDSTHD", "UTF-8");
+            String numbers = "&numbers=" + URLEncoder.encode(cno, "UTF-8");
+            
+            //Send Sms
+            String data = "https://api.textlocal.in/send/?" + user + hash + numbers + message + sender;
+            URL url = new URL(data);
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            
+            //get Response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            String sresult = "";
+            while ((line=reader.readLine()) != null){
+                //process line
+                sresult=sresult+line+" ";
+            }
+            reader.close();
+//            return sresult;
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('OTP Sent please check your registered mobile number')");
+            out.println("location='VerifyOtp.html';");
+            out.println("</script>");
         }
-        catch(Exception e)
-        {
-            PrintWriter out = response.getWriter();
-            e.printStackTrace(out);            
-        }
-        //processRequest(request, response);
-    }
+           catch (Exception ex){
+            PrintWriter pw = response.getWriter();
+            ex.printStackTrace(pw);
+    }    
+}
 
     /**
      * Returns a short description of the servlet.
