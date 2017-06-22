@@ -26,6 +26,8 @@
 <!--webfont-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <style>
+    @import url('http://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css');
     body {
     font-family: 'Text Me One', sans-serif;
     background: url(bg.png)repeat rgba(41, 176, 126, 0.89);
