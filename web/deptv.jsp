@@ -1,19 +1,20 @@
 <%-- 
-    Document   : deptreg
-    Created on : 19 Jun, 2017, 5:05:27 PM
+    Document   : deptv
+    Created on : 22 Jun, 2017, 4:02:50 PM
     Author     : ParthBheda
 --%>
 
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Medpal</title>
-<!--<meta http-equiv='cache-control' content='no-cache'>
-<meta http-equiv='expires' content='0'>
-<meta http-equiv='pragma' content='no-cache'>-->
-<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv='expires' content='0'>
@@ -330,9 +331,78 @@ body {
                 -webkit-box-shadow: none;
                 box-shadow: none;
             }
-</style>
+/*            -main content for table style*/
+            .wrapper{
+                margin-top: 0px;
+            }
+            .table-agile-info{
+/*	background: url(bg.png) repeat rgba(41,176,126,0.89);*/
+        padding: 2em;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel {
+    border: none ! important;
+    margin-top: 110px;
+    margin-left: 212px;
+}
+.panel-default>.panel-heading {
+/*    color: #000000 ! important;
+    background-color: #ddede0 ! important;
+    border-color: #ddede0 ! important;
+background: url(bg.png) repeat rgba(41,176,126,0.89);*/
+
+    font-size: 20px;
+}
+.row {
+		margin-right: 0;
+		margin-left: 0;
+	}
+        .w3-res-tb {
+    padding: 2em 1em 0;
+}
+.col-sm-5{
+    position:relative;min-height:1px;padding-right:15px;padding-left:15px
+}
+.m-b-xs {
+    margin-bottom: 5px;
+}
+select.input-sm {
+    height: 30px;
+    line-height: 30px;
+}
+.form-control{display:block;width:100%;height:34px;padding:6px 12px;font-size:14px;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s
+.w-sm {
+    width: 150px;
+}
+.inline {
+    display: inline-block !important;
+}
+.v-middle {
+    vertical-align: middle !important;
+}
+.btn-sm{padding:5px 10px;font-size:12px;line-height:1.5;border-radius:3px}
+.btn-default{color:#333;background-color:#fff;border-color:#ccc}
+.btn-default.focus,.btn-default:focus{color:#333;background-color:#e6e6e6;border-color:#8c8c8c}
+.btn-default:hover{color:#333;background-color:#e6e6e6;border-color:#adadad}
+.btn-default.active,.btn-default:active,.open>.dropdown-toggle
+.btn-default{color:#333;background-color:#e6e6e6;border-color:#adadad}
+.btn-default.active.focus,.btn-default.active:focus,.btn-default.active:hover,.btn-default:active.focus,
+.btn-default:active:focus,.btn-default:active:hover,.open>.dropdown-toggle.btn-default.focus,.open>.dropdown-toggle.btn-default:focus,.open>.dropdown-toggle
+.btn-default:hover{color:#333;background-color:#d4d4d4;border-color:#8c8c8c}
+.btn-default.active,.btn-default:active,.open>.dropdown-toggle
+.btn-default{background-image:none}
+.btn-default.disabled,.btn-default.disabled.active,.btn-default.disabled.focus,.btn-default.disabled:active,
+.btn-default.disabled:focus,.btn-default.disabled:hover,.btn-default[disabled],.btn-default[disabled].active,.btn-default[disabled].focus,
+.btn-default[disabled]:active,.btn-default[disabled]:focus,.btn-default[disabled]:hover,fieldset[disabled] .btn-default,fieldset[disabled] 
+.btn-default.active,fieldset[disabled] 
+.btn-default.focus,fieldset[disabled] 
+.btn-default:active,fieldset[disabled] .btn-default:focus,fieldset[disabled] .btn-default:hover{background-color:#fff;border-color:#ccc}
+.btn-default.badge{color:#fff;background-color:#333}
+              </style>
     </head>
-    <body style="background:url(bg.png) repeat rgba(41,176,126,0.89);">
+        <body style="background:url(bg.png) repeat rgba(41,176,126,0.89);">
          <aside class="sidebar">
             <div id="leftside-navigation" class="nano">
                 <ul class="nano-content">
@@ -435,48 +505,215 @@ body {
 			</script>
 			<div class="clearfix"></div>			
         </div>              
-                    <section id="portfolio">
-    <div class="container">
-        <div class="row"  style="margin-top:230px;">
-            <div class="col-lg-12 text-center">
-                <h2 style="color:white;">Department Name</h2>
-                <hr class="divider">
-            </div>
-        </div>
+                <section id="main-content">
+	<section class="wrapper">
+		<div class="table-agile-info">
+  <div class="panel panel-default">
+    <div class="panel-heading" style="margin-top:10px;">
+      Department List
     </div>
-     <div class="container">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="form-area">
-                <div role="form">
-                    <br style="clean:both">
-                    <div id="datepicker" class="calendar"></div>
-                    <div class="form-group">
-                        <form action="Department" method="post">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                
-                                <input type="text" class="form-control" id="otp" name="deptname" placeholder="Department Name" style="background:3e5871;color:#eee;border-color:#3e5871"><br>
-                                <input type="text" class="form-control" id="otp" name="deptcode" placeholder="Department Code" style="background:3e5871;color:#eee;border-color:#3e5871"><br>
-                                <input type="text" class="form-control" id="otp" name="deptcat" placeholder="Department Cateogry" style="background:3e5871;color:#eee;border-color:#3e5871"><br>
-                    </div>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <input type="submit" align="left" class=button value="Submit" name="save" style="width:150px;margin-left:15px"> <!--  formaction="Department" -->
-                            <input type="reset" align="center" class="button" value="Clear" name="clear" style="width:120px;margin-left:15px;background:#b02932;border: 0;
-                            font-family: 'Open Sans', Arial, sans-serif;font-size: 16px;height: 40px;border-radius: 3px;color: white;cursor: pointer;
-                            margin-top: 10px;transition: background 0.3s ease-in-out;">    
-                            <input type="submit" align="right" class="button" value="View Department" name="deptv" style="width:160px;margin-left:15px"> <!-- formaction="Department" -->
-<!--                    <button formaction="#" class=button style="width:150px;margin-left:15px;background:#b02932;border: 0;
-                            font-family: 'Open Sans', Arial, sans-serif;font-size: 16px;height: 40px;border-radius: 3px;color: white;cursor: pointer;
-                            margin-top: 10px;transition: background 0.3s ease-in-out;">View Department</button>-->
-</form>    
-        </div>
-        
-        </div>
+    <form>
+      <div class="col-sm-3">
+        <div class="input-group" >
+            <input type="text" class="input-sm form-control" name="sv" placeholder="Search by Department Name">
+          <span class="input-group-btn">
+              <input type="submit" class="btn btn-sm btn-default" name="btnsearch"  value="Go">              
+            </form> 
+            <!--<button class="btn btn-sm btn-default" type="button">Go!</button>-->
+            <!-- <input type="sumbit" class="btn btn-group btn-default" name="btnrefresh" value ="Refresh"> -->
+          </span>            
+        </div>          
+      </div>  
+        <div align="right">
+            <form>
+                <input type="submit" class="btn btn-sm btn-default" name="btnrefresh" alt="refresh" style="float: end;margin-right: 5px;margin-top: 2px;" value="Refresh">
+            </form>
+            </div>
+    <div class="table-responsive">
+      <table class="table table-striped b-t b-light">
+        <thead>
+          <tr>
+            <th>Department Name</th>
+            <th>Department Code</th>
+            <th>Department Category</th>
+            <th>Status</th>
+            <th style="width:30px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <%
+              if(request.getParameter("btnrefresh")!=null)
+              {
+              try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    %>
+                        <td name="dn" value="">
+                            <%out.println(rs.getString("DeptName"));%>
+                        </td>
+                        <td name="dc">
+                            <%out.println(rs.getString("DeptCode"));%>                            
+                        </td>
+                        <td name="dct">
+                            <%out.println(rs.getString("DeptCategory"));%>
+                        </td>
+                        <td name="ds">
+                            <%out.println(rs.getString("ActiveStatus"));%>
+                        </td>
+                        <td>
+              <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+            </td>            
+                    </tr>
+                    <%
+                }
+            %>
+        </tbody>
+      </table>
+              <%
+                rs.close();
+                ps.close();
+                connection.close();
+                }
+                catch(Exception ex) {
+                   ex.printStackTrace();
+                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
+//("<h1> error: "+ e.getMessage()+"</h1>");
+              }
+}
+else if(request.getParameter("btnsearch")!=null){
+String sv = request.getParameter("sv");
+            String dn = request.getParameter("dn");
+            String dc = request.getParameter("dc");
+            String dct = request.getParameter("dct");
+            String ds = request.getParameter("ds");
+try{
+if(request.getParameter(sv)==null){
+out.println("<script type=\"text/javascript\">");
+out.println("alert('Please fill department name to search records!');");
+out.println("location='deptv.jsp';");
+out.println("</script>");
+}
+else
+{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department where deptname='"+sv+"'");
+                ResultSet rs = ps.executeQuery();
+                if(rs.next()){
+                    %>
+                        <td name="dn" value="">
+                            <%out.println(rs.getString("DeptName"));%>
+                        </td>
+                        <td name="dc">
+                            <%out.println(rs.getString("DeptCode"));%>                            
+                        </td>
+                        <td name="dct">
+                            <%out.println(rs.getString("DeptCategory"));%>
+                        </td>
+                        <td name="ds">
+                            <%out.println(rs.getString("ActiveStatus"));%>
+                        </td>
+                        <td>
+              <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
+            </td>            
+                    </tr>
+                    <%
+                }
 
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+else{
+                out.println("<script type=\"text/javascript\">");
+                out.println("alert('Department with "+sv+" does not exist!');");
+                out.println("location='deptv.jsp';");
+                out.println("</script>");
+}
+
+            %>
+        </tbody>
+      </table>
+              <%
+                rs.close();
+                ps.close();
+                connection.close();
+                }
+}
+                catch(Exception ex) {
+                   ex.printStackTrace();
+                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
+//("<h1> error: "+ e.getMessage()+"</h1>");
+              }
+}
+else
+             {
+              try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department");
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    String dname=rs.getString("DeptName");
+                    %>
+                        <td name="dn" value="">
+                            <%=dname%>                             
+                        </td>
+                        <td name="dc">
+                            <%out.println(rs.getString("DeptCode"));%>                            
+                        </td>
+                        <td name="dct">
+                            <%out.println(rs.getString("DeptCategory"));%>
+                        </td>
+                        <td name="ds">
+                            <%out.println(rs.getString("ActiveStatus"));%>
+                        </td>
+                        <td>
+<!--                            <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"onclick="active();"></i><i class="fa fa-times text-danger text"></i></a>-->
+                            <form action="Department" method="post">
+                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" style="border:none;background: transparent;" ><br>
+                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" style="border:none;background: transparent;">
+                            <input type="hidden" name="dname" value="<%=dname%>">
+                            </form>
+            </td>            
+                    </tr>
+                    <%
+                }
+            %>
+        </tbody>
+      </table>
+              <%
+                rs.close();
+                ps.close();
+                connection.close();
+                }
+                catch(Exception ex) {
+                   ex.printStackTrace();
+                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
+//("<h1> error: "+ e.getMessage()+"</h1>");
+              }
+}
+
+              %>
+    </div>
+<!--    <footer class="panel-footer">
+      <div class="row">
+        <div class="col-sm-7 text-right text-center-xs">                
+          <ul class="pagination pagination-sm m-t-none m-b-none">
+            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
+            <li><a href="">1</a></li>
+            <li><a href="">2</a></li>
+            <li><a href="">3</a></li>
+            <li><a href="">4</a></li>
+            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>-->
+  </div>
+</div>
+</section>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
     <script src="index.js"></script>
     </body>
