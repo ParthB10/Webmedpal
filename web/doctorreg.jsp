@@ -129,7 +129,7 @@
          border-top: 3px solid #434a52;
           border-bottom: 3px solid #434a52;
     	padding: 10px 40px 60px;
-    	margin: 10px 0px 60px;
+    	
     	border: 1px solid GREY;
     	color:white;
     	}
@@ -453,7 +453,9 @@
                                              <input type="date" class="form-control" id="doc" placeholder="Date of Join" style="background:#3e5871;color: #eee;border-color: #3e5871">
                                              <br>
                                              <input type="email" class="form-control" id="doc" name="docemail" placeholder="Email" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-
+                                             <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                             <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                             
                                         </div>
                                         <br>
                                         <br>
