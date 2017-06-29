@@ -152,7 +152,7 @@ body {
                                 <a href="deptreg.jsp">Department Registration</a>
                             </li>
                             <li>
-                                <a href="#">Doctor Registration</a>
+                                <a href="doctorreg.jsp">Doctor Registration</a>
                             </li>
                         </ul>
                     </li>
