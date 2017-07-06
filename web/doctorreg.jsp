@@ -4,6 +4,10 @@
     Author     : PoojaBamane
 --%>
 
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -438,25 +442,99 @@
                             <br style="clear: both">
                             <div id="datepicker" class="calendar"></div>
                             <div class="form-group">
-                                <form action="doctor" method="post">
+                                <form action="Doctor" method="post">                                    
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" id="doc" name="docname" placeholder="Doctor Name" style="background:#3e5871;color:#eee;border-color:#3e5871"><br>
+                                            <% 
+                                        String dname = request.getParameter("dname");                                        
+                                        if(dname!=null){
+                                            try{
+                                            Class.forName("com.mysql.jdbc.Driver");
+                                            Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                                            PreparedStatement ptst = connection.prepareStatement("select id,doctorid,Address,DoctorsName,DoctorCode,DeptName,ContactNo,Email,Dateofjoin,Doctors.ActiveStatus from doctors Inner join department on department.id = doctors.DoctorDeptID where DoctorsName = '"+dname+"'");
+                                            ResultSet set = ptst.executeQuery();
+                                            if(set.next()){
+                                                String id = set.getString("doctorid");
+                                                String dcode = set.getString("DoctorCode");
+                                                String deptname = set.getString("DeptName");
+                                                String cno = set.getString("ContactNo");
+                                                String email =set.getString("Email");
+                                                String doj = set.getString("Dateofjoin");
+                                                String add = set.getString("Address");
+                                                String deptid = set.getString("id");                                                
+                                           %>
+                                           <input type="hidden" class="form-control" id="doc" name="did" placeholder="Doctor Name" value="<%=id%>" style="background:#3e5871;color:#eee;border-color:#3e5871"><br>
+                                           <input type="text" class="form-control" id="doc" name="dname" placeholder="Doctor Name" value="<%=dname%>" style="background:#3e5871;color:#eee;border-color:#3e5871"><br>
+                                           <input type="text" class="form-control" id="doc" name="dCode" placeholder="Doctor Code" value="<%=dcode%>" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                           <input type="text" class="form-control" id="doc" name="dadd" placeholder="Address" value="<%=add%>" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                           <input type="number" class="form-control" id="doc" name="dcno" placeholder="Contact No" value="<%=cno%>" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                            <select class="form-control" name="docdept" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                                <option value="<%=deptid%>"><%=deptname%></option>
+                                                <% 
+                                                    {                                                        
+                                                        PreparedStatement ps = connection.prepareStatement("Select * from department where activestatus='Y'");
+                                                        ResultSet rs = ps.executeQuery();
+                                                        while (rs.next()){
+                                                            out.println("<option value="+"\""+rs.getString("id")+"\""+">"+rs.getString("deptname")+"</option>");                                                            
+                                                        }
+                                                    }
+                                                    %>
+                                            </select>
+                                            <br>
+                                            <label style="font-weight:normal;margin-bottom:5px;">Date of Join.</label>
+                                             <input type="date" class="form-control" id="doc" name="ddoj" placeholder="Date of Join" value="<%=doj%>" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                             <br>
+                                             <input type="email" class="form-control" id="doc" name="demail" placeholder="Email" value="<%=email%>"  style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+<!--                                         <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                             <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>-->
+                                            <br>
+                                             <input type="submit" align="left" class=button value="Update" name="update" style="width:150px;margin-left:15px"> 
+                                             
+                                           <%
+                                        }
+                                        }
+                                        catch(Exception ex){
+                                                        out.println("<script type=\"text/javascript\">");
+                                                        out.println("alert('"+ex.getMessage()+"');");
+                                                        out.println("location='doctorreg.jsp';");
+                                                        out.println("</script>");
+                                        }
+                                        }
+                                        else
+                                        {
+                                        %>
+                                          <input type="text" class="form-control" id="doc" name="docname" placeholder="Doctor Name" style="background:#3e5871;color:#eee;border-color:#3e5871"><br>
                                             <input type="text" class="form-control" id="doc" name="docCode" placeholder="Doctor Code" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
                                             <input type="text" class="form-control" id="doc" name="docadd" placeholder="Address" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
                                             <input type="number" class="form-control" id="doc" name="docc" placeholder="Contact No" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
                                             <select class="form-control" name="DoctorDepartment" style="background:#3e5871;color: #eee;border-color: #3e5871">
                                                 <option value="-1"> - - Select Department - -</option>   
+                                                <% 
+                                                    try{
+                                                        Class.forName("com.mysql.jdbc.Driver");
+                                                        Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                                                        PreparedStatement ps = connection.prepareStatement("Select * from department where activestatus='Y'");
+                                                        ResultSet rs = ps.executeQuery();
+                                                        while (rs.next()){
+                                                            out.println("<option value="+"\""+rs.getString("id")+"\""+">"+rs.getString("deptname")+"</option>");                                                            
+                                                        }
+                                                    }
+                                                    catch(Exception ex){
+                                                        out.println("<script type=\"text/javascript\">");
+                                                        out.println("alert('"+ex.getMessage()+"');");
+                                                        out.println("location='doctorreg.jsp';");
+                                                        out.println("</script>");
+                                                    }
+                                                %>
                                             </select>
                                             <br>
                                             <label style="font-weight:normal;margin-bottom:5px;">Date of Join.</label>
-                                             <input type="date" class="form-control" id="doc" placeholder="Date of Join" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                            <input type="date" class="form-control" id="doc" name="doj" placeholder="Date of Join" style="background:#3e5871;color: #eee;border-color: #3e5871">
                                              <br>
                                              <input type="email" class="form-control" id="doc" name="docemail" placeholder="Email" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                             <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                             <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                             
-                                        </div>
+<!--                                         <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                             <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>-->
+                                             </div>
                                         <br>
                                         <br>
                                         <br>
@@ -465,7 +543,15 @@
                                         <input type="reset" align="center" class="button" value="Clear" name="clear" style="width:120px;margin-left:15px;background:#b02932;border: 0;
                                         font-family: 'Open Sans', Arial, sans-serif;font-size: 16px;height: 40px;border-radius: 3px;color: white;cursor: pointer;
                                         margin-top: 10px;transition: background 0.3s ease-in-out;">    
-                                        <input type="submit" align="right" class="button" value="View Doctor" name="" style="width:160px;margin-left:15px">
+                                        <input type="submit" name="docv" align="right" class="button" value="View Doctor" name="" style="width:160px;margin-left:15px">
+                                        <%
+
+                                        }
+                                    %>
+                                          
+
+                                             
+                                        
                                     </div>
                                 </form>
                             </div>
