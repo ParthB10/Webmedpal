@@ -368,10 +368,10 @@ body {
                         <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Doctor Details</span><i class="arrow fa fa-angle-right pull-right"></i> </a>
                         <ul>
                             <li>
-                                <a href="#">Department Registration</a>
+                                <a href="deptreg.jsp">Department Registration</a>
                             </li>
                             <li>
-                                <a href="#">Doctor Registration</a>
+                                <a href="doctorreg.jsp">Doctor Registration</a>
                             </li>
                         </ul>
                     </li>
@@ -434,7 +434,7 @@ body {
     <div class="container">
         <div class="row"  style="margin-top:230px;">
             <div class="col-lg-12 text-center">
-                <h2 style="color:white;">Department Name</h2>
+                <h2 style="color:white;">Department Registration</h2>
                 <hr class="divider">
             </div>
         </div>

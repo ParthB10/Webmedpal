@@ -1,6 +1,6 @@
 <%-- 
-    Document   : deptv
-    Created on : 22 Jun, 2017, 4:02:50 PM
+    Document   : doctorv
+    Created on : 30 Jun, 2017, 11:42:23 AM
     Author     : ParthBheda
 --%>
 
@@ -445,15 +445,7 @@ select.input-sm {
                             </li>
                         </ul>
                     </li>
-<!--                    <li class="sub-menu">
-                        <a href="javascript:void(0);"><i class="fa fa-cogs"><span>User Details</span><i class="arrow fa fa-angle-right pull-right"></i></i> </a>
-                        <ul>
-                            <li>
-                                <a href="#">Portal User Registration</a>
-                            </li>                            
-                        </ul>
-                    </li>-->
-            </div>             
+                    </div>             
          </aside>
         <div class="member" style="margin-left:135px;">
                 <!--get username from session <i class="men">-->
@@ -509,17 +501,17 @@ select.input-sm {
 	<section class="wrapper">
 		<div class="table-agile-info">
   <div class="panel panel-default">
-    <div class="panel-heading" style="margin-top:10px;">
-      Department List
-    </div>
-    <form>
+      <div class="panel-heading" style="margin-top:10px;">
+          Doctor List
+      </div>
+      <form>
       <div class="col-sm-3">
         <div class="input-group" >
-            <input type="text" class="input-sm form-control" name="sv" placeholder="Search by Department Name">
+            <input type="text" class="input-sm form-control" name="sv" placeholder="Search by Doctor Name">
           <span class="input-group-btn">
               <input type="submit" class="btn btn-sm btn-default" name="btnsearch"  value="Go">              
-            </form>             
-          </span>            
+            </form> 
+      </span>            
         </div>          
       </div>  
         <div align="right">
@@ -527,198 +519,178 @@ select.input-sm {
                 <input type="submit" class="btn btn-sm btn-default" name="btnrefresh" alt="refresh" style="float: end;margin-right: 5px;margin-top: 2px;" value="Refresh">
             </form>
             </div>
-    <div class="table-responsive">
-      <table class="table table-striped b-t b-light">
+          <div class="table-responsive">
+              <form action="doctorreg.jsp" method="post">
+        <table class="table table-striped b-t b-light">
         <thead>
           <tr>
+            <th>Doctor Name</th>
+            <th>Doctor Code</th>
             <th>Department Name</th>
-            <th>Department Code</th>
-            <th>Department Category</th>
+            <th>Contact Number </th>
+            <th>Email</th>
+            <th>Date Of Joining</th>
             <th>Status</th>
             <th style="width:30px;"></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-          <%
-              if(request.getParameter("btnrefresh")!=null)
-              {
-              try{
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
-                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department");
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    String dname=rs.getString("DeptName");
-                    %>
-                        <td name="dn" value="">
-                            <%out.println(rs.getString("DeptName"));%>
-                        </td>
-                        <td name="dc">
-                            <%out.println(rs.getString("DeptCode"));%>                            
-                        </td>
-                        <td name="dct">
-                            <%out.println(rs.getString("DeptCategory"));%>
-                        </td>
-                        <td name="ds">
-                            <%out.println(rs.getString("ActiveStatus"));%>
-                        </td>
-                        <td>
-                            <form action="Department" method="post">
-                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Activate Department" style="border:none;background: transparent;" ><br>
-                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" title="Deactivate Department" style="border:none;background: transparent;">
-                            <input type="hidden" name="dname" value="<%=dname%>">
-                            </form>
-            </td>            
-                    </tr>
-                    <%
-                }
-            %>
-        </tbody>
-      </table>
-              <%
-                rs.close();
-                ps.close();
-                connection.close();
-                }
-                catch(Exception ex) {
-                   ex.printStackTrace();
-                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
-//("<h1> error: "+ e.getMessage()+"</h1>");
-              }
-}
-else if(request.getParameter("btnsearch")!=null){
-String sv = request.getParameter("sv");
-            String dn = request.getParameter("dn");
-            String dc = request.getParameter("dc");
-            String dct = request.getParameter("dct");
-            String ds = request.getParameter("ds");
-try{
-if(request.getParameter(sv)==null){
-out.println("<script type=\"text/javascript\">");
-out.println("alert('Please fill department name to search records!');");
-out.println("location='deptv.jsp';");
-out.println("</script>");
-}
-else
-{
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
-                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department where deptname='"+sv+"'");
-                ResultSet rs = ps.executeQuery();
-                if(rs.next()){
-                    String dname=rs.getString("DeptName");
-                    %>
-                        <td name="dn" value="">
-                            <%out.println(rs.getString("DeptName"));%>
-                        </td>
-                        <td name="dc">
-                            <%out.println(rs.getString("DeptCode"));%>                            
-                        </td>
-                        <td name="dct">
-                            <%out.println(rs.getString("DeptCategory"));%>
-                        </td>
-                        <td name="ds">
-                            <%out.println(rs.getString("ActiveStatus"));%>
-                        </td>
-                        <td>
-                            <form action="Department" method="post">
-                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Activate Department" style="border:none;background: transparent;" ><br>
-                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" title="Deactivate Department" style="border:none;background: transparent;">
-                            <input type="hidden" name="dname" value="<%=dname%>">
-                            </form>
-            </td>            
-                    </tr>
-                    <%
-                }
-
-else{
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Department with "+sv+" does not exist!');");
-                out.println("location='deptv.jsp';");
-                out.println("</script>");
-}
-
-            %>
-        </tbody>
-      </table>
-              <%
-                rs.close();
-                ps.close();
-                connection.close();
-                }
-}
-                catch(Exception ex) {
-                   ex.printStackTrace();
-                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
-//("<h1> error: "+ e.getMessage()+"</h1>");
-              }
-}
-else
-             {
-              try{
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
-                PreparedStatement ps = connection.prepareStatement("select DeptCode,DeptName,DeptCategory,ActiveStatus from department");
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                    String dname=rs.getString("DeptName");
-                    %>
-                        <td name="dn" value="">
-                            <%=dname%>                             
-                        </td>
-                        <td name="dc">
-                            <%out.println(rs.getString("DeptCode"));%>                            
-                        </td>
-                        <td name="dct">
-                            <%out.println(rs.getString("DeptCategory"));%>
-                        </td>
-                        <td name="ds">
-                            <%out.println(rs.getString("ActiveStatus"));%>
-                        </td>
-                        <td>
+            <tr>
+                <%
+                    try{
+                        String sv = request.getParameter("sv");
+                        Class.forName("com.mysql.jdbc.Driver");
+                        Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+                        if(request.getParameter("sv")==null)
+                        {
+                        PreparedStatement ptst = connection.prepareStatement("select DoctorsName,DoctorCode,DeptName,ContactNo,Email,Dateofjoin,Doctors.ActiveStatus from doctors Inner join department on department.id = doctors.DoctorDeptID");
+                        ResultSet rs = ptst.executeQuery();
+                        while(rs.next()){
+                            String docname=rs.getString("DoctorsName");
+                            String doccode=rs.getString("DoctorCode");
+                            String deptname=rs.getString("DeptName");
+                            String cno=rs.getString("ContactNo");
+                            String email =rs.getString("Email");
+                            String doj =rs.getString("Dateofjoin");
+                            String astat=rs.getString("ActiveStatus");
+                            %>
+                            <td>
+                                <%=docname%>
+                            </td>
+                            <td>
+                                <%=doccode%>
+                            </td>
+                            <td>
+                                <%=deptname%>
+                            </td>
+                            <td>
+                                <%=cno%>
+                            </td>
+                            <td>
+                                <%=email%>
+                            </td>
+                            <td>
+                                <%=doj%>
+                            </td>
+                            <td>
+                                <%=astat%>
+                            </td>
+                            <td>
 <!--                            <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"onclick="active();"></i><i class="fa fa-times text-danger text"></i></a>-->
-                            <form action="Department" method="post">
-                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Activate Department" style="border:none;background: transparent;" ><br>
-                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" title="Deactivate Department" style="border:none;background: transparent;">
-                            <input type="hidden" name="dname" value="<%=dname%>">
+                            <form action="Doctor" method="post">
+                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Update Doctor" style="border:none;background: transparent;" ><br>
+                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" Title="Deactivate Doctor" style="border:none;background: transparent;" formaction="Doctor" formmethod="post">
+                            <input type="hidden" name="dname" value="<%=docname%>">
                             </form>
-            </td>            
-                    </tr>
-                    <%
-                }
-            %>
-        </tbody>
+                            </td>
+                            </form>
+                            </tr>
+                            <%
+                        }
+                        }
+                            else if(request.getParameter("btnrefresh")!= null){
+                            PreparedStatement ptst = connection.prepareStatement("select DoctorsName,DoctorCode,DeptName,ContactNo,Email,Dateofjoin,Doctors.ActiveStatus from doctors Inner join department on department.id = doctors.DoctorDeptID");
+                        ResultSet rs = ptst.executeQuery();
+                        while(rs.next()){
+                            String docname=rs.getString("DoctorsName");
+                            String doccode=rs.getString("DoctorCode");
+                            String deptname=rs.getString("DeptName");
+                            String cno=rs.getString("ContactNo");
+                            String email =rs.getString("Email");
+                            String doj =rs.getString("Dateofjoin");
+                            %>
+                            <td>
+                                <%=docname%>
+                            </td>
+                            <td>
+                                <%=doccode%>
+                            </td>
+                            <td>
+                                <%=deptname%>
+                            </td>
+                            <td>
+                                <%=cno%>
+                            </td>
+                            <td>
+                                <%=email%>
+                            </td>
+                            <td>
+                                <%=doj%>
+                            </td>
+                            <td>
+<!--                            <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"onclick="active();"></i><i class="fa fa-times text-danger text"></i></a>-->
+                            <form action="Doctor" method="post">
+                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Update Doctor" style="border:none;background: transparent;" ><br>
+                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" Title="Deactivate Doctor" style="border:none;background: transparent;">
+                            <input type="hidden" name="dname" value="<%=docname%>">
+                            </form>
+                            </td>
+                            </tr>
+                            <%
+                        }
+                    }
+                        else if(request.getParameter("btnsearch")!=null){
+                                    PreparedStatement ptst = connection.prepareStatement("select DoctorsName,DoctorCode,DeptName,ContactNo,Email,Dateofjoin,Doctors.ActiveStatus from doctors Inner join department on department.id = doctors.DoctorDeptID where doctorsname like '%"+sv+"%'");
+                        ResultSet rs = ptst.executeQuery();
+                        if(rs.next()){
+                            String docname=rs.getString("DoctorsName");
+                            String doccode=rs.getString("DoctorCode");
+                            String deptname=rs.getString("DeptName");
+                            String cno=rs.getString("ContactNo");
+                            String email =rs.getString("Email");
+                            String doj =rs.getString("Dateofjoin");
+                            %>
+                            <td>
+                                <%=docname%>
+                            </td>
+                            <td>
+                                <%=doccode%>
+                            </td>
+                            <td>
+                                <%=deptname%>
+                            </td>
+                            <td>
+                                <%=cno%>
+                            </td>
+                            <td>
+                                <%=email%>
+                            </td>
+                            <td>
+                                <%=doj%>
+                            </td>
+                            <td>
+<!--                            <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"onclick="active();"></i><i class="fa fa-times text-danger text"></i></a>-->
+                            <form action="Doctor" method="post">
+                            <input type="submit" name="btnactive" class="active fa fa-check text-success text-active" value="✓" title="Update Doctor" style="border:none;background: transparent;" ><br>
+                            <input type="submit" name="btndeactive" class="fa fa-times text-danger text" value="x" Title="Deactivate Doctor" style="border:none;background: transparent;">
+                            <input type="hidden" name="dname" value="<%=docname%>">
+                            </form>
+                            </td>
+                            </tr>
+                            <%
+                        }
+                        else{
+                        out.println("<script type=\"text/javascript\">");
+                        out.println("alert('Doctor with "+sv+" not found please try again!');");
+                        out.println("location='doctorv.jsp';");
+                        out.println("</script>");
+                        }
+                        rs.close();
+                        ptst.close();
+                        connection.close();
+                    }
+                    }catch(Exception ex){
+                        out.println("<script type=\"text/javascript\">");
+                        out.println("alert('"+ex.getStackTrace()+"');");
+                        out.println("location='doctorv.jsp';");
+                        out.println("</script>");
+                    }
+                %>
+            
+        </tbody>        
       </table>
-              <%
-                rs.close();
-                ps.close();
-                connection.close();
-                }
-                catch(Exception ex) {
-                   ex.printStackTrace();
-                   out.println("<h1> error:"+ex.getMessage()+"</h1>"); 
-//("<h1> error: "+ e.getMessage()+"</h1>");
-              }
-}
-
-              %>
-    </div>
-<!--    <footer class="panel-footer">
-      <div class="row">
-        <div class="col-sm-7 text-right text-center-xs">                
-          <ul class="pagination pagination-sm m-t-none m-b-none">
-            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-            <li><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">3</a></li>
-            <li><a href="">4</a></li>
-            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </footer>-->
-  </div>
+                </div>
+                </div>
 </div>
 </section>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

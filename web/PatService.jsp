@@ -44,8 +44,8 @@
                 <div class="navigation">
                     <h3>Navigation</h3>
                                 <ul>
-					<li><a href="#"><i class="cal"></i></a></li>
-					<li><a href="#">Schedule an Appointment</a></li>
+					<li><a href="appointment.jsp"><i class="cal"></i></a></li>
+					<li><a href="appointment.jsp">Schedule an Appointment</a></li>
                                         
 				</ul>
                                 <ul>

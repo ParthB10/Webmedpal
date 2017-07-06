@@ -116,11 +116,54 @@ public class Department extends HttpServlet {
         }
         }
         else if(request.getParameter("deptv")!=null){
-                PrintWriter out = response.getWriter();
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Coming Soon!');");
-                out.println("location='deptreg.jsp';");
-                out.println("</script>");
+                response.sendRedirect("deptv.jsp");
+        }
+        else if(request.getParameter("btnactive")!=null)
+        {
+            PrintWriter out = response.getWriter();
+            String dn = request.getParameter("dname");                                    
+            try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection=DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+            PreparedStatement ptsmt = connection.prepareStatement("Update Department set ActiveStatus = 'Y' where deptname='"+dn+"'");
+            ptsmt.executeUpdate();            
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Department with "+dn+" activated!');");
+            out.println("location='deptv.jsp';");
+            out.println("</script>");            
+            ptsmt.close();
+            connection.close();
+            }
+            catch (ClassNotFoundException | SQLException ex)
+            {            
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('"+ex+"');");
+            out.println("location='deptv.jsp';");
+            out.println("</script>");
+            }
+        }
+        else if(request.getParameter("btndeactive")!=null){
+            PrintWriter out = response.getWriter();
+            String dn = request.getParameter("dname");                                    
+            try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection=DriverManager.getConnection("jdbc:mysql://192.168.1.10/test_medpal","root","Admin@123");
+            PreparedStatement ptsmt = connection.prepareStatement("Update Department set ActiveStatus = 'N' where deptname='"+dn+"'");
+            ptsmt.executeUpdate();            
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('Department with "+dn+" deactivated!');");
+            out.println("location='deptv.jsp';");
+            out.println("</script>");            
+            ptsmt.close();
+            connection.close();
+            }
+            catch (ClassNotFoundException | SQLException ex)
+            {            
+            out.println("<script type=\"text/javascript\">");
+            out.println("alert('"+ex+"');");
+            out.println("location='deptv.jsp';");
+            out.println("</script>");
+            }
         }
     }
 
