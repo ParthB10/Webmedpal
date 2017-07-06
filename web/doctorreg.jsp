@@ -128,7 +128,7 @@
         background: #2C3E50;
          border-top: 3px solid #434a52;
           border-bottom: 3px solid #434a52;
-    	padding: 10px 40px 60px;
+    	padding: 10px 10px 30px;
     	
     	border: 1px solid GREY;
     	color:white;
@@ -142,6 +142,20 @@
         color:black;
     }
     .button[type="submit"] {
+      background:#b02932;
+      border: 0;
+      width: 100%;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 16px;
+      height: 40px;
+      border-radius: 3px;
+      color: white;
+      align:center;
+      cursor: pointer;
+      margin-top:10px;
+      transition: background 0.3s ease-in-out;
+    }
+    .button[type="reset"] {
       background:#b02932;
       border: 0;
       width: 100%;
@@ -426,46 +440,97 @@
              <div class="container">
         <div class="row"  style="margin-top:230px;">
             <div class="col-lg-12 text-center">
-                <h2 style="color:white;">Doctor Registration</h2>
+                <h2 style="color:white;margin-left: 8%;">Doctor Registration</h2>
                 <hr class="divider">
             </div>
         </div>
     </div>
             <div class='container'>
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" style="width:85%;margin-left:12%;">
                     <div class="form-area">
                         <div role="form">
                             <br style="clear: both">
                             <div id="datepicker" class="calendar"></div>
                             <div class="form-group">
                                 <form action="doctor" method="post">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <input type="text" class="form-control" id="doc" name="docname" placeholder="Doctor Name" style="background:#3e5871;color:#eee;border-color:#3e5871"><br>
-                                            <input type="text" class="form-control" id="doc" name="docCode" placeholder="Doctor Code" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                            <input type="text" class="form-control" id="doc" name="docadd" placeholder="Address" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                            <input type="number" class="form-control" id="doc" name="docc" placeholder="Contact No" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                            <select class="form-control" name="DoctorDepartment" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <input type="text" class="form-control" id="doc" name="docname" placeholder="Doctor Name" style="background:#3e5871;color:#eee;border-color:#3e5871; ">
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <input type="text" class="form-control" id="doc" name="docCode" placeholder="Doctor Code" style="background:#3e5871;color: #eee;border-color: #3e5871;"><br> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-6">
+                                           <input type="text" class="form-control" id="doc" name="docadd" placeholder="Address" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <input type="number" class="form-control" id="doc" name="docc" placeholder="Contact No" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <label style="font-weight:normal;margin-bottom:5px;"></label>
+                                           <select class="form-control" name="DoctorDepartment" style="background:#3e5871;color: #eee;border-color: #3e5871">
                                                 <option value="-1"> - - Select Department - -</option>   
                                             </select>
-                                            <br>
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
                                             <label style="font-weight:normal;margin-bottom:5px;">Date of Join.</label>
                                              <input type="date" class="form-control" id="doc" placeholder="Date of Join" style="background:#3e5871;color: #eee;border-color: #3e5871">
-                                             <br>
-                                             <input type="email" class="form-control" id="doc" name="docemail" placeholder="Email" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                             <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
-                                             <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871"><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-6">
+                                                                                      
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <label style="font-weight:normal;margin-bottom:5px;"></label>
+                                            <input type="email" class="form-control" id="doc" name="docemail" placeholder="Email" style="background:#3e5871;color: #eee;border-color: #3e5871">                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <label style="font-weight:normal;margin-bottom:5px;"></label>
+                                            <input type="text" class="form-control" id="doc" name="docusername" placeholder="Username" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
+                                            <label style="font-weight:normal;margin-bottom:5px;"></label>
+                                            <input type="password" class="form-control" id="doc" name="docpass" placeholder="Password" style="background:#3e5871;color: #eee;border-color: #3e5871">
+                                        </div>
+                                    </div>       
+                                            
+                                           
+                                             
+                                             
+                                             
                                              
                                         </div>
                                         <br>
                                         <br>
                                         <br>
                                         <br>
-                                        <input type="submit" align="left" class=button value="Submit" name="save" style="width:150px;margin-left:15px"> 
-                                        <input type="reset" align="center" class="button" value="Clear" name="clear" style="width:120px;margin-left:15px;background:#b02932;border: 0;
-                                        font-family: 'Open Sans', Arial, sans-serif;font-size: 16px;height: 40px;border-radius: 3px;color: white;cursor: pointer;
-                                        margin-top: 10px;transition: background 0.3s ease-in-out;">    
-                                        <input type="submit" align="right" class="button" value="View Doctor" name="" style="width:160px;margin-left:15px">
+                                        <div class="container">
+                                            <br>
+                                        <br>
+                                        <br>
+                                            <div class="col-md-12 col-sm-12" style="margin-left:12%;">
+                                                <div class="form-group col-md-2 col-sm-2">
+                                                    <input type="submit" align="left" class=button value="Submit" name="save" > 
+                                                </div>
+                                                <div class="form-group col-md-2 col-sm-2">
+                                                    <input type="reset" align="center" class="button" value="Clear" name="clear"> 
+                                                </div>
+                                                <div class="form-group col-md-2 col-sm-2">
+                                                    <input type="submit" align="right" class="button" value="View Doctor" name="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
                                     </div>
                                 </form>
                             </div>
