@@ -132,7 +132,7 @@
         background: #2C3E50;
          border-top: 3px solid #434a52;
           border-bottom: 3px solid #434a52;
-    	padding: 10px 40px 60px;
+    	padding: 10px 10px 30px;
     	
     	border: 1px solid GREY;
     	color:white;
@@ -146,6 +146,20 @@
         color:black;
     }
     .button[type="submit"] {
+      background:#b02932;
+      border: 0;
+      width: 100%;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 16px;
+      height: 40px;
+      border-radius: 3px;
+      color: white;
+      align:center;
+      cursor: pointer;
+      margin-top:10px;
+      transition: background 0.3s ease-in-out;
+    }
+    .button[type="reset"] {
       background:#b02932;
       border: 0;
       width: 100%;
@@ -430,13 +444,13 @@
              <div class="container">
         <div class="row"  style="margin-top:230px;">
             <div class="col-lg-12 text-center">
-                <h2 style="color:white;">Doctor Registration</h2>
+                <h2 style="color:white;margin-left: 8%;">Doctor Registration</h2>
                 <hr class="divider">
             </div>
         </div>
     </div>
             <div class='container'>
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-6 col-md-offset-3" style="width:85%;margin-left:12%;">
                     <div class="form-area">
                         <div role="form">
                             <br style="clear: both">
@@ -527,7 +541,9 @@
                                                     }
                                                 %>
                                             </select>
-                                            <br>
+                                            
+                                        </div>
+                                        <div class="form-group col-md-6 col-sm-6">
                                             <label style="font-weight:normal;margin-bottom:5px;">Date of Join.</label>
                                             <input type="date" class="form-control" id="doc" name="doj" placeholder="Date of Join" style="background:#3e5871;color: #eee;border-color: #3e5871">
                                              <br>
